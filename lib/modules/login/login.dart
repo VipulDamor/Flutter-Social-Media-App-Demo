@@ -40,7 +40,6 @@ class Login extends StatelessWidget {
         AppTwitterSignin().isAppTwitterSignin();
       }
     }
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -121,6 +120,10 @@ class Login extends StatelessWidget {
                     BottomIcons(FontAwesomeIcons.twitter, () async {
                       AppTwitterSignin().performTwitterSignin();
                     }),
+                    /*SizedBox(width: 20),
+                    Platform.isIOS
+                        ? BottomIcons(FontAwesomeIcons.apple, () {}):
+                    SizedBox(width: 20),*/
                   ],
                 ),
                 Row(
