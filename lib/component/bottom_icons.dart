@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BottomIcons extends StatelessWidget {
   final IconData icon;
@@ -11,7 +10,7 @@ class BottomIcons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(40.r)),
+        borderRadius: BorderRadius.all(Radius.circular(40)),
         border: Border.all(color: Colors.indigo),
       ),
       child: IconButton(

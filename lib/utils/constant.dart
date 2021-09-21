@@ -3,7 +3,6 @@ import 'package:fdsr/modules/login/login.dart';
 import 'package:fdsr/utils/signin_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class Constant {
@@ -27,7 +26,7 @@ class Constant {
         children: [
           CircularProgressIndicator(),
           SizedBox(
-            width: 10.w,
+            width: 10,
           ),
           Container(
               margin: EdgeInsets.only(left: 5), child: Text("Loading...")),

@@ -6,7 +6,6 @@ import 'package:fdsr/utils/google_signin.dart';
 import 'package:fdsr/utils/signin_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -57,88 +56,85 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: Size(Get.width, Get.height),
-      builder: () => SafeArea(
-        child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              createPost(userID);
-            },
-            child: Icon(FontAwesomeIcons.plus),
-          ),
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            title: (Text('Login With $signInType')),
-            actions: [
-              IconButton(
-                  onPressed: () async {
-                    if (config[0] == SignInConfig.EMAIL) {
-                      await FirebaseAuth.instance.signOut();
-                      await Constant.isLoggedIn();
-                    } else if (config[0] == SignInConfig.GOOGLE) {
-                      AppGoogleSignIn appGoogleSignIn = AppGoogleSignIn();
-                      await appGoogleSignIn.handleGoogleSignOut();
-                      await appGoogleSignIn.isSignin();
-                    } else if (config[0] == SignInConfig.FACEBOOK) {
-                      AppFacebookSignin appGoogleSignIn = AppFacebookSignin();
-                      await appGoogleSignIn.performFacebookLogout();
-                      await appGoogleSignIn.isFacebookLogin();
-                    } else if (config[0] == SignInConfig.APPLE) {
-                    } else if (config[0] == SignInConfig.TWITTER) {
-                      await sharedPrefarance.erase();
-                      Get.off(() => Login());
-                    }
-                  },
-                  icon: Icon(FontAwesomeIcons.signOutAlt))
-            ],
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(12.r),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.indigo,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(8),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(60),
-                            child: Image.asset(
-                              'images/logo.jpg',
-                              width: 48.w,
-                              height: 48.h,
-                              fit: BoxFit.cover,
-                            ),
+    return SafeArea(
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            createPost(userID);
+          },
+          child: Icon(FontAwesomeIcons.plus),
+        ),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: (Text('Login With $signInType')),
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  if (config[0] == SignInConfig.EMAIL) {
+                    await FirebaseAuth.instance.signOut();
+                    await Constant.isLoggedIn();
+                  } else if (config[0] == SignInConfig.GOOGLE) {
+                    AppGoogleSignIn appGoogleSignIn = AppGoogleSignIn();
+                    await appGoogleSignIn.handleGoogleSignOut();
+                    await appGoogleSignIn.isSignin();
+                  } else if (config[0] == SignInConfig.FACEBOOK) {
+                    AppFacebookSignin appGoogleSignIn = AppFacebookSignin();
+                    await appGoogleSignIn.performFacebookLogout();
+                    await appGoogleSignIn.isFacebookLogin();
+                  } else if (config[0] == SignInConfig.APPLE) {
+                  } else if (config[0] == SignInConfig.TWITTER) {
+                    await sharedPrefarance.erase();
+                    Get.off(() => Login());
+                  }
+                },
+                icon: Icon(FontAwesomeIcons.signOutAlt))
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.indigo,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(8),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(60),
+                          child: Image.asset(
+                            'images/logo.jpg',
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                email,
-                                style: TextStyle(
-                                    fontSize: 16.sp, color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              email,
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  ListData(),
-                ],
-              ),
+                ),
+                ListData(),
+              ],
             ),
           ),
         ),
@@ -159,7 +155,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(24.r),
+              padding: EdgeInsets.all(24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -184,7 +180,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 20.h,
+                    height: 20,
                   ),
                   ActionChip(
                       backgroundColor: Colors.indigo,
@@ -198,8 +194,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                             color: Colors.white,
                           ),
                           SizedBox(
-                            width: 18.w,
-                            height: 38.h,
+                            width: 18,
+                            height: 38,
                           ),
                           Text(
                             'Publish Post',

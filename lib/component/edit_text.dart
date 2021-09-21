@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EditText extends StatelessWidget {
   final String hintText;
@@ -18,7 +17,7 @@ class EditText extends StatelessWidget {
         Icon(
           data,
         ),
-        SizedBox(width: 8.w),
+        SizedBox(width: 8),
         Expanded(
           child: TextField(
             controller: textController,

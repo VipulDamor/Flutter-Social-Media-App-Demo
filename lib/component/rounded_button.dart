@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RoundedButton extends StatelessWidget {
   final String buttonText;
@@ -12,11 +11,11 @@ class RoundedButton extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       width: double.infinity,
-      height: 48.h,
+      height: 48,
       decoration: BoxDecoration(
           border: Border.all(color: Colors.indigo),
           color: Colors.indigo,
-          borderRadius: BorderRadius.all(Radius.circular(18.r))),
+          borderRadius: BorderRadius.all(Radius.circular(18))),
       child: TextButton(
         onPressed: function,
         child: SizedBox(
@@ -24,7 +23,7 @@ class RoundedButton extends StatelessWidget {
           child: Text(
             buttonText,
             style: TextStyle(
-              fontSize: 18.sp,
+              fontSize: 18,
               color: Colors.white,
             ),
             textAlign: TextAlign.center,
