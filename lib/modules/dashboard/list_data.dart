@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fdsr/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ListData extends StatelessWidget {
   final Stream<QuerySnapshot> fireStoreData = FirebaseFirestore.instance
@@ -27,7 +28,7 @@ class ListData extends StatelessWidget {
 
         return dataList.isNotEmpty
             ? Container(
-                height: MediaQuery.of(context).size.height - 160,
+                height: MediaQuery.of(context).size.height - 180,
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
                   physics: const BouncingScrollPhysics(
@@ -36,21 +37,83 @@ class ListData extends StatelessWidget {
                   itemCount: dataList.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot data = dataList[index];
-
-                    return InkWell(
+                    Timestamp timestamp = data['${Constant.KEY_POST_DATE}'];
+                    DateTime date = Timestamp.fromMillisecondsSinceEpoch(
+                            timestamp.millisecondsSinceEpoch)
+                        .toDate();
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.blue,
+                              radius: 25,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(60),
+                                child: Image.asset(
+                                  'images/logo.jpg',
+                                  width: 48,
+                                  height: 48,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 16,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    data['${Constant.KEY_USERID}'].toString(),
+                                    style: kBoldStyle,
+                                  ),
+                                  Text(
+                                    timeago.format(date, locale: 'en_short'),
+                                    style: kRegularStyle14,
+                                  ),
+                                  //Text('hello') //)
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          data['${Constant.KEY_POST}'],
+                          style: kRegularStyle16,
+                        ),
+                        Divider(
+                          color: Colors.grey,
+                          thickness: 0.5,
+                        ),
+                      ],
+                    );
+                    /*return InkWell(
                       onTap: () {},
                       child: Card(
-                        elevation: 2,
-                        color: Colors.white70,
+                        color: Colors.white,
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: ListTile(
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(60),
+                              child: Image.asset(
+                                'images/logo.jpg',
+                                width: 48,
+                                height: 48,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                             title: Text(data['${Constant.KEY_POST}']),
                             //subtitle: Text(data['${Constant.KEY_POST_DATE}'].toString()),
                           ),
                         ),
                       ),
-                    );
+                    );*/
                   },
                   /*separatorBuilder: (BuildContext context, int index) {
                     return Divider(

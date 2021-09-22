@@ -42,107 +42,112 @@ class Login extends StatelessWidget {
     }
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+      body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(21, 0, 21, 0),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset("images/logo.jpg"),
-                Text(
-                  'Login',
-                  style: TextStyle(fontSize: 31, fontWeight: FontWeight.w700),
-                ),
-                SizedBox(height: 8),
-                EditText('email', false, Icons.alternate_email, (data) {
-                  print(data);
-                }, getLoginController.loginEmailController),
-                Divider(
-                  color: Colors.black,
-                  height: 18,
-                ),
-                EditText('password', true, Icons.lock_outlined, (data) {
-                  print(data);
-                }, getLoginController.loginPasswordController),
-                Divider(
-                  color: Colors.black,
-                  height: 18,
-                ),
-                SizedBox(height: 10),
-                RoundedButton('Login', () async {
-                  //button click
-                  String message = await getLoginController.performEmailLogin();
-                  showAlertDialog(message);
-                }),
-                SizedBox(height: 20),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        height: 18,
-                        thickness: 1,
-                      ),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Image.asset(
+                    "images/logo.jpg",
+                    width: 160,
+                    height: 160,
+                  ),
+                  Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 31,
+                      fontWeight: FontWeight.w700,
                     ),
-                    Expanded(
-                        flex: 2,
+                    textAlign: TextAlign.start,
+                  ),
+                  SizedBox(height: 8),
+                  EditText('email', false, Icons.alternate_email, (data) {},
+                      getLoginController.loginEmailController),
+                  Divider(
+                    color: Colors.black,
+                    thickness: 1,
+                  ),
+                  EditText('password', true, Icons.lock_outlined, (data) {},
+                      getLoginController.loginPasswordController),
+                  Divider(
+                    color: Colors.black,
+                    thickness: 1,
+                  ),
+                  SizedBox(height: 10),
+                  RoundedButton('Login', () async {
+                    //button click
+                    String message =
+                        await getLoginController.performEmailLogin();
+                    showAlertDialog(message);
+                  }),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 1,
+                        ),
+                      ),
+                      Expanded(
+                          flex: 2,
+                          child: Text(
+                            'Or sign in with',
+                            textAlign: TextAlign.center,
+                          )),
+                      Expanded(
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      BottomIcons(FontAwesomeIcons.google, () async {
+                        AppGoogleSignIn appGoogleSignIn = AppGoogleSignIn();
+                        await appGoogleSignIn.handleGooleSignIn();
+                        await appGoogleSignIn.isSignin();
+                      }),
+                      SizedBox(width: 20),
+                      BottomIcons(FontAwesomeIcons.facebook, () {
+                        AppFacebookSignin().performFacebookLogin();
+                      }),
+                      SizedBox(width: 20),
+                      BottomIcons(FontAwesomeIcons.twitter, () async {
+                        await AppTwitterSignin().performTwitterSignin();
+                      }),
+                      /*SizedBox(width: 20),
+                      Platform.isIOS
+                          ? BottomIcons(FontAwesomeIcons.apple, () {}):
+                      SizedBox(width: 20),*/
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('New User ?'),
+                      TextButton(
+                        onPressed: () {
+                          Get.to(() => Register());
+                        },
                         child: Text(
-                          'Or sign in with',
-                          textAlign: TextAlign.center,
-                        )),
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        height: 18,
-                        thickness: 1,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    BottomIcons(FontAwesomeIcons.google, () async {
-                      AppGoogleSignIn appGoogleSignIn = AppGoogleSignIn();
-                      await appGoogleSignIn.handleGooleSignIn();
-                      await appGoogleSignIn.isSignin();
-                    }),
-                    SizedBox(width: 20),
-                    BottomIcons(FontAwesomeIcons.facebook, () {
-                      AppFacebookSignin().performFacebookLogin();
-                    }),
-                    SizedBox(width: 20),
-                    BottomIcons(FontAwesomeIcons.twitter, () async {
-                      AppTwitterSignin().performTwitterSignin();
-                    }),
-                    /*SizedBox(width: 20),
-                    Platform.isIOS
-                        ? BottomIcons(FontAwesomeIcons.apple, () {}):
-                    SizedBox(width: 20),*/
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text('New User ?'),
-                    TextButton(
-                      onPressed: () {
-                        Get.to(() => Register());
-                      },
-                      child: Text(
-                        ' Register',
-                        style: TextStyle(color: Colors.indigo),
-                      ),
-                    )
-                  ],
-                )
-              ],
+                          ' Register',
+                          style: TextStyle(color: Colors.indigo),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
