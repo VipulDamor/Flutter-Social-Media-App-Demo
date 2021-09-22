@@ -5,6 +5,7 @@ import 'package:fdsr/utils/facebook_signin.dart';
 import 'package:fdsr/utils/google_signin.dart';
 import 'package:fdsr/utils/signin_config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -83,6 +84,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     await appGoogleSignIn.isFacebookLogin();
                   } else if (config[0] == SignInConfig.APPLE) {
                   } else if (config[0] == SignInConfig.TWITTER) {
+                    if (kIsWeb) {
+                      FirebaseAuth.instance.signOut();
+                    }
                     await sharedPrefarance.erase();
                     Get.off(() => Login());
                   }

@@ -1,6 +1,8 @@
 import 'package:fdsr/modules/dashboard/dashboard.dart';
 import 'package:fdsr/utils/constant.dart';
 import 'package:fdsr/utils/signin_config.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -11,40 +13,65 @@ class AppTwitterSignin {
   final API_SECRET_KEY = 't00Swzubrp09HBA0Pd9ZhuamEJWyULP1KHKOu8m0rzmH7z5lbW';
   final sharedPrefarance = GetStorage();
 
-  Future<void> performTwitterSignin() async {
-    final twitterLogin = TwitterLogin(
-      apiKey: API_KEY,
-      apiSecretKey: API_SECRET_KEY,
-      redirectURI: 'fdsr://',
-    );
-    final authResult = await twitterLogin.login();
+  Future<UserCredential> signInWithTwitter() async {
+    // Create a new provider
+    TwitterAuthProvider twitterProvider = TwitterAuthProvider();
 
-    print(authResult);
-    switch (authResult.status) {
-      case TwitterLoginStatus.loggedIn:
-        /*print(authResult.user!.email);
-        print(authResult.user!.name);*/
-        // success
-        String email = authResult.user!.email.toString();
-        String id = authResult.user!.id.toString();
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithPopup(twitterProvider);
+
+    // Or use signInWithRedirect
+    // return await FirebaseAuth.instance.signInWithRedirect(twitterProvider);
+  }
+
+  Future<void> performTwitterSignin() async {
+    if (kIsWeb) {
+      TwitterAuthProvider twitterProvider = TwitterAuthProvider();
+      // Once signed in, return the UserCredential
+      UserCredential credential =
+          await FirebaseAuth.instance.signInWithPopup(twitterProvider);
+      if (credential != null && credential.user != null) {
+        String? email = credential.user!.email;
+        String id = credential.user!.uid;
 
         sharedPrefarance.write(Constant.GOOGLE_SIGNIN_EMAIL, email);
         sharedPrefarance.write(Constant.GOOGLE_SIGNIN_ID, id);
 
         Get.off(() => DashBoardScreen(),
             arguments: [SignInConfig.TWITTER, email, id]);
+      }
+    } else {
+      final twitterLogin = TwitterLogin(
+        apiKey: API_KEY,
+        apiSecretKey: API_SECRET_KEY,
+        redirectURI: 'fdsr://',
+      );
+      final authResult = await twitterLogin.login();
 
-        print('====== Login success ======');
-        break;
-      case TwitterLoginStatus.cancelledByUser:
-        // cancel
-        print('====== Login cancel ======');
-        break;
-      case TwitterLoginStatus.error:
-      case null:
-        // error
-        print('====== Login error ======');
-        break;
+      print(authResult);
+      switch (authResult.status) {
+        case TwitterLoginStatus.loggedIn:
+          String email = authResult.user!.email.toString();
+          String id = authResult.user!.id.toString();
+
+          sharedPrefarance.write(Constant.GOOGLE_SIGNIN_EMAIL, email);
+          sharedPrefarance.write(Constant.GOOGLE_SIGNIN_ID, id);
+
+          Get.off(() => DashBoardScreen(),
+              arguments: [SignInConfig.TWITTER, email, id]);
+
+          print('====== Login success ======');
+          break;
+        case TwitterLoginStatus.cancelledByUser:
+          // cancel
+          print('====== Login cancel ======');
+          break;
+        case TwitterLoginStatus.error:
+        case null:
+          // error
+          print('====== Login error ======');
+          break;
+      }
     }
   }
 

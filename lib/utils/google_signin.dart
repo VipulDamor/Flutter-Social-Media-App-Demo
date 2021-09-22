@@ -71,6 +71,7 @@ class AppGoogleSignIn {
         var id = sharedPrefarance.read(Constant.GOOGLE_SIGNIN_ID);
 
         print(email.runtimeType);
+
         if (email.runtimeType == String) {
           Get.off(() => DashBoardScreen(), arguments: [
             SignInConfig.GOOGLE,
@@ -78,7 +79,7 @@ class AppGoogleSignIn {
             id,
           ]);
         } else {
-          print('user   ${googleSignInAccount.toString()}');
+          print('user   ${googleSignInAccount}');
           if (!Get.currentRoute.endsWith('Login')) {
             Get.off(() => Login());
           }
