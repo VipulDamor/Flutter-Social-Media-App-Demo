@@ -24,6 +24,7 @@ class Constant {
   static const String KEY_POST = 'post';
   static const String KEY_POST_DATE = 'postDate';
   static const String KEY_USERID = 'userID';
+  static const String KEY_USEREMAIL = 'userEmail';
 
   static Future<User?> getFirebaseuser() async {
     return _firebaseAuth.currentUser;

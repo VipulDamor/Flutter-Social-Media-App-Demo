@@ -1,12 +1,8 @@
-import 'package:fdsr/modules/login/login.dart';
+import 'package:fdsr/modules/settings/settings.dart';
 import 'package:fdsr/utils/app_firestore.dart';
 import 'package:fdsr/utils/constant.dart';
-import 'package:fdsr/utils/facebook_signin.dart';
-import 'package:fdsr/utils/google_signin.dart';
-import 'package:fdsr/utils/signin_config.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -26,13 +22,14 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   @override
   void initState() {
     config = Get.arguments;
-    print('arguments : $config');
-
-    sharedPrefarance.write(Constant.LOGIN_WITH, config[0].toString());
 
     signInType = config[0].toString().split('.').last;
     email = config[1];
     userID = config[2];
+
+    sharedPrefarance.write(Constant.LOGIN_WITH, config[0].toString());
+    sharedPrefarance.write(Constant.KEY_USERID, userID);
+    sharedPrefarance.write(Constant.KEY_USEREMAIL, email);
 
     //todo may need in future work
     /*switch (config[0]) {
@@ -58,6 +55,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             createPost(userID);
@@ -69,89 +67,81 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           title: (Text('Login With $signInType')),
           actions: [
             IconButton(
-                onPressed: () async {
-                  if (config[0] == SignInConfig.EMAIL) {
-                    await FirebaseAuth.instance.signOut();
-                    await Constant.isLoggedIn();
-                  } else if (config[0] == SignInConfig.GOOGLE) {
-                    AppGoogleSignIn appGoogleSignIn = AppGoogleSignIn();
-                    await appGoogleSignIn.handleGoogleSignOut();
-                    await appGoogleSignIn.isSignin();
-                  } else if (config[0] == SignInConfig.FACEBOOK) {
-                    AppFacebookSignin appGoogleSignIn = AppFacebookSignin();
-                    await appGoogleSignIn.performFacebookLogout();
-                    await appGoogleSignIn.isFacebookLogin();
-                  } else if (config[0] == SignInConfig.APPLE) {
-                  } else if (config[0] == SignInConfig.TWITTER) {
-                    if (kIsWeb) {
-                      FirebaseAuth.instance.signOut();
-                    }
-                    await sharedPrefarance.erase();
-                    Get.off(() => Login());
-                  }
+                onPressed: () {
+                  Get.to(SettingsScreen());
                 },
-                icon: Icon(FontAwesomeIcons.signOutAlt))
+                icon: Icon(Icons.settings))
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.indigo,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(8),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(60),
-                              child: Image.asset(
-                                'images/logo.jpg',
-                                width: 48,
-                                height: 48,
-                                fit: BoxFit.cover,
-                              ),
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(4),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.indigo,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(60),
+                            child: Image.asset(
+                              'images/logo.jpg',
+                              width: 48,
+                              height: 48,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          Expanded(
-                            flex: 2,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  email,
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                email,
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Container(
+            ),
+            Expanded(
+              child: Container(
+                child: TopChipCategory(),
+              ),
+            ),
+            Expanded(
+              flex: 10,
+              child: Container(
                 padding: EdgeInsets.fromLTRB(21, 10, 21, 30),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  //borderRadius: BorderRadius.all(Radius.circular(30)),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30),
+                      topLeft: Radius.circular(30)),
                 ),
                 child: ListData(),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -229,5 +219,34 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             ),
           );
         });
+  }
+}
+
+class TopChipCategory extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return Row(
+            children: [
+              ActionChip(
+                backgroundColor: Colors.white,
+                label: Text('category $index'),
+                onPressed: () {
+                  print('$index got clicked');
+                },
+              ),
+              SizedBox(
+                width: 8,
+              )
+            ],
+          );
+        },
+      ),
+    );
   }
 }

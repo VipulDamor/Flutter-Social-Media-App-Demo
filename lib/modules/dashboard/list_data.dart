@@ -27,10 +27,10 @@ class ListData extends StatelessWidget {
         List<QueryDocumentSnapshot<dynamic>> dataList = snapshot.data!.docs;
         return dataList.isNotEmpty
             ? Container(
-                height: MediaQuery.of(context).size.height - 180,
+                //height: MediaQuery.of(context).size.height - 180,
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
-                  physics: const BouncingScrollPhysics(
+                  physics: BouncingScrollPhysics(
                       parent: AlwaysScrollableScrollPhysics()),
                   shrinkWrap: true,
                   itemCount: dataList.length,
