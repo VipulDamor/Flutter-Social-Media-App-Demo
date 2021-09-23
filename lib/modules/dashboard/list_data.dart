@@ -25,7 +25,6 @@ class ListData extends StatelessWidget {
         }
 
         List<QueryDocumentSnapshot<dynamic>> dataList = snapshot.data!.docs;
-
         return dataList.isNotEmpty
             ? Container(
                 height: MediaQuery.of(context).size.height - 180,
@@ -92,34 +91,7 @@ class ListData extends StatelessWidget {
                         ),
                       ],
                     );
-                    /*return InkWell(
-                      onTap: () {},
-                      child: Card(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: ListTile(
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(60),
-                              child: Image.asset(
-                                'images/logo.jpg',
-                                width: 48,
-                                height: 48,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            title: Text(data['${Constant.KEY_POST}']),
-                            //subtitle: Text(data['${Constant.KEY_POST_DATE}'].toString()),
-                          ),
-                        ),
-                      ),
-                    );*/
                   },
-                  /*separatorBuilder: (BuildContext context, int index) {
-                    return Divider(
-                      thickness: 1,
-                    );
-                  },*/
                 ),
               )
             : Center(child: Text("No Data Found"));
