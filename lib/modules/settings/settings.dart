@@ -19,8 +19,6 @@ class SettingsScreen extends StatelessWidget {
     var userID = sharedPrefarance.read(Constant.KEY_USERID);
     var UserEmail = sharedPrefarance.read(Constant.KEY_USEREMAIL);
 
-    print(logintype);
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -28,15 +26,6 @@ class SettingsScreen extends StatelessWidget {
         body: (Container(
           child: ListView(
             children: [
-              ListTile(
-                leading: Icon(FontAwesomeIcons.user),
-                title: Text('User Profile'),
-                subtitle: Text('View or Update User Profile'),
-                onTap: () {},
-              ),
-              Divider(
-                thickness: 1,
-              ),
               ListTile(
                 leading: Icon(FontAwesomeIcons.affiliatetheme),
                 title: Text('Change Theme'),
@@ -75,6 +64,9 @@ class SettingsScreen extends StatelessWidget {
                     }
                   }
                 },
+              ),
+              Divider(
+                thickness: 1,
               ),
             ],
           ),
