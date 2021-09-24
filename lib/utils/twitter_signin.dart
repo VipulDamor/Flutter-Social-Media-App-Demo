@@ -26,19 +26,32 @@ class AppTwitterSignin {
 
   Future<void> performTwitterSignin() async {
     if (kIsWeb) {
-      TwitterAuthProvider twitterProvider = TwitterAuthProvider();
-      // Once signed in, return the UserCredential
-      UserCredential credential =
-          await FirebaseAuth.instance.signInWithPopup(twitterProvider);
-      if (credential != null && credential.user != null) {
-        String? email = credential.user!.email;
-        String id = credential.user!.uid;
+      try {
+        TwitterAuthProvider twitterProvider = TwitterAuthProvider();
+        // Once signed in, return the UserCredential
+        UserCredential credential =
+            await FirebaseAuth.instance.signInWithPopup(twitterProvider);
 
-        sharedPrefarance.write(Constant.GOOGLE_SIGNIN_EMAIL, email);
-        sharedPrefarance.write(Constant.GOOGLE_SIGNIN_ID, id);
+        print(credential);
+        print(credential.user);
+        print(credential.user!.email);
 
-        Get.off(() => DashBoardScreen(),
-            arguments: [SignInConfig.TWITTER, email, id]);
+        if (credential != null && credential.user != null) {
+          String? email = credential.user!.email;
+          String id = credential.user!.uid;
+
+          sharedPrefarance.write(Constant.GOOGLE_SIGNIN_EMAIL, email);
+          sharedPrefarance.write(Constant.GOOGLE_SIGNIN_ID, id);
+
+          Get.off(() => DashBoardScreen(),
+              arguments: [SignInConfig.TWITTER, email, id]);
+        }
+      } on FirebaseAuthException catch (error) {
+        print(error.code);
+        if (error.code == 'account-exists-with-different-credential') {
+          String message = 'An account already exists with the same email';
+          Constant.showAlertDialog(message);
+        }
       }
     } else {
       final twitterLogin = TwitterLogin(

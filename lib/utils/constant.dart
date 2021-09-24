@@ -111,4 +111,21 @@ class Constant {
 
     return time;
   }
+
+  static void showAlertDialog(String message) {
+    if (message != '') {
+      Get.dialog(
+        AlertDialog(
+          content: Text(message),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text('ok'))
+          ],
+        ),
+      );
+    }
+  }
 }

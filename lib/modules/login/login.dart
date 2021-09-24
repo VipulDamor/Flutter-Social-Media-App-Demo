@@ -82,7 +82,7 @@ class Login extends StatelessWidget {
                     //button click
                     String message =
                         await getLoginController.performEmailLogin();
-                    showAlertDialog(message);
+                    Constant.showAlertDialog(message);
                   }),
                   SizedBox(height: 20),
                   Row(
@@ -153,22 +153,5 @@ class Login extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void showAlertDialog(String message) {
-    if (message != '') {
-      Get.dialog(
-        AlertDialog(
-          content: Text(message),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Get.back();
-                },
-                child: Text('ok'))
-          ],
-        ),
-      );
-    }
   }
 }
