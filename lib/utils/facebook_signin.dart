@@ -19,10 +19,10 @@ class AppFacebookSignin {
 
   Future<void> isFacebookLogin() async {
     if (await FacebookAuth.instance.accessToken != null) {
-      print(await FacebookAuth.instance.accessToken);
+      //print(await FacebookAuth.instance.accessToken);
       // user is logged
       var userData = await FacebookAuth.instance.getUserData();
-      print(userData);
+      // print(userData);
       String email = userData['name'];
       String id = userData['id'];
       Get.off(DashBoardScreen(), arguments: [SignInConfig.FACEBOOK, email, id]);

@@ -16,6 +16,7 @@ class MainActivity: FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         printHashKey(this@MainActivity)
+
     }
     fun printHashKey(pContext: Context) {
         try {
@@ -32,4 +33,5 @@ class MainActivity: FlutterActivity() {
             Log.e("MainActivity", "printHashKey()", e)
         }
     }
+
 }

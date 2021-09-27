@@ -1,5 +1,6 @@
 import 'package:fdsr/component/circle_Image.dart';
 import 'package:fdsr/modules/profile/profile.dart';
+import 'package:fdsr/modules/profile/profile_controller.dart';
 import 'package:fdsr/modules/settings/settings.dart';
 import 'package:fdsr/utils/app_firestore.dart';
 import 'package:fdsr/utils/constant.dart';
@@ -20,6 +21,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   String email = '', signInType = '', userID = '';
   var config = Get.arguments;
   final sharedPrefarance = GetStorage();
+  final profileController = Get.put(ProfileController());
 
   @override
   void initState() {
@@ -28,6 +30,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     signInType = config[0].toString().split('.').last;
     email = config[1];
     userID = config[2];
+    profileController.getUser(userID);
 
     sharedPrefarance.write(Constant.LOGIN_WITH, config[0].toString());
     sharedPrefarance.write(Constant.KEY_USERID, userID);
@@ -96,16 +99,30 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CirCleImage(),
+                          Obx(
+                            () => profileController.userPhoto != ''
+                                ? CirCleImage(
+                                    imagePath:
+                                        '${profileController.userPhoto.value}',
+                                    from: Constant.IMAGE_FROM_NETWORK)
+                                : CirCleImage(),
+                          ),
                           Expanded(
                             flex: 2,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Obx(() => Text(
+                                      '${profileController.userName}',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700),
+                                    )),
                                 Text(
                                   email,
                                   style: TextStyle(
-                                      fontSize: 16, color: Colors.white),
+                                      fontSize: 14, color: Colors.white),
                                 ),
                               ],
                             ),
@@ -206,7 +223,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       ),
                       onPressed: () async {
                         if (post.toString().trim() != '') {
-                          await AppFireStore().addPostToFirebase(post, userID);
+                          await AppFireStore.addPostToFirebase(
+                              post, userID, profileController.userName.value);
                           Get.back();
                         }
                       }),

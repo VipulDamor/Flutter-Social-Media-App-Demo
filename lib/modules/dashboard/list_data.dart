@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fdsr/utils/app_firestore.dart';
 import 'package:fdsr/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ListData extends StatelessWidget {
-  final Stream<QuerySnapshot> fireStoreData = FirebaseFirestore.instance
-      .collection(Constant.KEY_POSTS)
+  final Stream<QuerySnapshot> fireStoreData = AppFireStore.posts
       .orderBy(
         '${Constant.KEY_POST_DATE}',
         descending: true,
@@ -27,20 +28,32 @@ class ListData extends StatelessWidget {
         List<QueryDocumentSnapshot<dynamic>> dataList = snapshot.data!.docs;
         return dataList.isNotEmpty
             ? Container(
-                //height: MediaQuery.of(context).size.height - 180,
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
                   physics: BouncingScrollPhysics(
                       parent: AlwaysScrollableScrollPhysics()),
                   shrinkWrap: true,
                   itemCount: dataList.length,
-                  itemBuilder: (context, index) {
+                  itemBuilder: (context, index) /*async*/ {
                     DocumentSnapshot data = dataList[index];
+
+                    String userName = '';
+                    //User user = await AppFireStore.getUsersInfo(data['${Constant.KEY_USERID}'].toString());
+
                     Timestamp timestamp = data['${Constant.KEY_POST_DATE}'];
                     DateTime date = Timestamp.fromMillisecondsSinceEpoch(
                             timestamp.millisecondsSinceEpoch)
                         .toDate();
+
+                    String userID = data['${Constant.KEY_USERID}'].toString();
+
+                    /*  AppFireStore.getUsersInfo(userID).then((value) {
+                      userName = value.userName;
+                      print('data firestore : $userName');
+                    });*/
+
                     return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
@@ -65,7 +78,10 @@ class ListData extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    data['${Constant.KEY_USERID}'].toString(),
+                                    userName == ''
+                                        ? data['${Constant.KEY_USERID}']
+                                            .toString()
+                                        : userName,
                                     style: kBoldStyle,
                                   ),
                                   Text(

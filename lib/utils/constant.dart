@@ -15,9 +15,12 @@ const kRegularStyle14 =
 
 class Constant {
   static FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   static const String LOGIN_WITH = 'loginWith';
   static const String GOOGLE_SIGNIN_EMAIL = 'googleAuthEmail';
   static const String GOOGLE_SIGNIN_ID = 'googleAuthID';
+  static const String IMAGE_FROM_STORAGE = 'storage';
+  static const String IMAGE_FROM_NETWORK = 'network';
 
   //fireStoreKeys
   static const String KEY_POSTS = 'posts';
@@ -30,7 +33,7 @@ class Constant {
     return _firebaseAuth.currentUser;
   }
 
-  static void getloaderDialog() {
+  static void getloaderDialog({String message = 'Loading..'}) {
     Get.dialog(AlertDialog(
       content: new Row(
         children: [
@@ -38,8 +41,7 @@ class Constant {
           SizedBox(
             width: 10,
           ),
-          Container(
-              margin: EdgeInsets.only(left: 5), child: Text("Loading...")),
+          Container(margin: EdgeInsets.only(left: 5), child: Text(message)),
         ],
       ),
     ));

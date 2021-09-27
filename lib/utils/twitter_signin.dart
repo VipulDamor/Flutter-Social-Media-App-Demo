@@ -32,9 +32,9 @@ class AppTwitterSignin {
         UserCredential credential =
             await FirebaseAuth.instance.signInWithPopup(twitterProvider);
 
-        print(credential);
+        /*print(credential);
         print(credential.user);
-        print(credential.user!.email);
+        print(credential.user!.email);*/
 
         if (credential != null && credential.user != null) {
           String? email = credential.user!.email;
@@ -61,7 +61,7 @@ class AppTwitterSignin {
       );
       final authResult = await twitterLogin.login();
 
-      print(authResult);
+      //print(authResult);
       switch (authResult.status) {
         case TwitterLoginStatus.loggedIn:
           String email = authResult.user!.email.toString();
@@ -93,7 +93,7 @@ class AppTwitterSignin {
       final id = sharedPrefarance.read(Constant.GOOGLE_SIGNIN_ID);
       final email = sharedPrefarance.read(Constant.GOOGLE_SIGNIN_EMAIL);
 
-      print('twitter data : $id and  $email');
+      // print('twitter data : $id and  $email');
 
       SchedulerBinding.instance!.addPostFrameCallback((_) {
         Get.off(() => DashBoardScreen(),

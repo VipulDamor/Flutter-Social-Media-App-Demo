@@ -14,7 +14,7 @@ class AppGoogleSignIn {
   Future<void> handleGooleSignIn() async {
     try {
       GoogleSignInAccount? googleSignInAccount = await _signIn.signIn();
-      print(googleSignInAccount!.email);
+      //print(googleSignInAccount!.email);
 
       //todo for external use
       /*GoogleSignInAuthentication googleSignInAuthentication =
@@ -70,7 +70,7 @@ class AppGoogleSignIn {
         var email = sharedPrefarance.read(Constant.GOOGLE_SIGNIN_EMAIL);
         var id = sharedPrefarance.read(Constant.GOOGLE_SIGNIN_ID);
 
-        print(email.runtimeType);
+        // print(email.runtimeType);
 
         if (email.runtimeType == String) {
           Get.off(() => DashBoardScreen(), arguments: [
@@ -79,7 +79,7 @@ class AppGoogleSignIn {
             id,
           ]);
         } else {
-          print('user   ${googleSignInAccount}');
+          // print('user   ${googleSignInAccount}');
           if (!Get.currentRoute.endsWith('Login')) {
             Get.off(() => Login());
           }

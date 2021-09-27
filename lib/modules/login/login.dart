@@ -22,8 +22,8 @@ class Login extends StatelessWidget {
   build(BuildContext context) {
     var config = sharedPrefarance.read(Constant.LOGIN_WITH);
 
-    print('runtimeType ${config.runtimeType}');
-    print('runtimeType $config');
+/*    print('runtimeType ${config.runtimeType}');
+    print('runtimeType $config');*/
 
     if (config.runtimeType == String) {
       if (config == SignInConfig.GOOGLE.toString()) {
@@ -36,7 +36,7 @@ class Login extends StatelessWidget {
         Constant.isLoggedIn();
       }
       if (config == SignInConfig.TWITTER.toString()) {
-        print('coming here');
+        //print('coming here');
         AppTwitterSignin().isAppTwitterSignin();
       }
     }
