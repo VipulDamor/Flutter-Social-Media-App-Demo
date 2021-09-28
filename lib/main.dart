@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     Firebase.initializeApp();
 
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'fdsr',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
