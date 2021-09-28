@@ -38,13 +38,19 @@ class CirCleImage extends StatelessWidget {
                       height: height,
                       fit: BoxFit.cover,
                     )
-                  : Image(
+                  : CachedNetworkImage(
                       width: width,
                       height: height,
-                      image: CachedNetworkImageProvider(
-                        imagePath,
-                      ),
-                      fit: BoxFit.cover)
+                      imageUrl: imagePath,
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      fit: BoxFit.cover,
+                    ) /*Image(
+                      width: width,
+                      height: height,
+                      image: CachedNetworkImageProvider(imagePath,),
+                      fit: BoxFit.cover)*/
               : (from == Constant.IMAGE_FROM_STORAGE
                   ? imagePath == 'images/logo.jpg'
                       ? Image.asset(

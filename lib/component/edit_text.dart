@@ -6,9 +6,11 @@ class EditText extends StatelessWidget {
   final IconData data;
   final Null Function(String data) param3;
   final TextEditingController textController;
+  TextInputType textInputType;
 
   EditText(this.hintText, this.isPasswordFeild, this.data, this.param3,
-      this.textController);
+      this.textController,
+      {this.textInputType = TextInputType.text});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +24,11 @@ class EditText extends StatelessWidget {
           child: TextField(
             controller: textController,
             obscureText: isPasswordFeild,
-            decoration:
-                InputDecoration(hintText: hintText, border: InputBorder.none),
+            keyboardType: textInputType,
+            decoration: InputDecoration(
+                hintText: 'Enter $hintText',
+                hintStyle: TextStyle(color: Colors.grey),
+                border: InputBorder.none),
             onChanged: param3,
           ),
         ),

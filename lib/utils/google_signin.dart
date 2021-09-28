@@ -61,7 +61,7 @@ class AppGoogleSignIn {
         sharedPrefarance.write(
             Constant.GOOGLE_SIGNIN_ID, googleSignInAccount.id);
 
-        Get.off(() => DashBoardScreen(), arguments: [
+        Get.offAll(() => DashBoardScreen(), arguments: [
           SignInConfig.GOOGLE,
           googleSignInAccount.email,
           googleSignInAccount.id,
@@ -73,7 +73,7 @@ class AppGoogleSignIn {
         // print(email.runtimeType);
 
         if (email.runtimeType == String) {
-          Get.off(() => DashBoardScreen(), arguments: [
+          Get.offAll(() => DashBoardScreen(), arguments: [
             SignInConfig.GOOGLE,
             email,
             id,
@@ -81,7 +81,7 @@ class AppGoogleSignIn {
         } else {
           // print('user   ${googleSignInAccount}');
           if (!Get.currentRoute.endsWith('Login')) {
-            Get.off(() => Login());
+            Get.offAll(() => Login());
           }
         }
       }
@@ -102,7 +102,7 @@ class AppGoogleSignIn {
     } else {
       print('yes sign out');
       if (!Get.currentRoute.endsWith('Login')) {
-        Get.off(() => Login());
+        Get.offAll(() => Login());
       }
     }
   }

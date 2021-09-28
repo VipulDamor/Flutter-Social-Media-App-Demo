@@ -130,4 +130,23 @@ class Constant {
       );
     }
   }
+
+  static void showMessageAlertDialog(String message, {VoidCallback? onpress}) {
+    if (message != '') {
+      Get.dialog(
+        AlertDialog(
+          content: Text(message),
+          actions: [
+            TextButton(
+                onPressed: onpress == null
+                    ? () {
+                        Get.back();
+                      }
+                    : onpress,
+                child: Text('ok'))
+          ],
+        ),
+      );
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fdsr/component/circle_Image.dart';
 import 'package:fdsr/utils/app_firestore.dart';
 import 'package:fdsr/utils/constant.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class ListData extends StatelessWidget {
         '${Constant.KEY_POST_DATE}',
         descending: true,
       )
-      .snapshots(includeMetadataChanges: true);
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,6 @@ class ListData extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Text("Loading");
         }
-
         List<QueryDocumentSnapshot<dynamic>> dataList = snapshot.data!.docs;
         return dataList.isNotEmpty
             ? Container(
@@ -34,11 +34,8 @@ class ListData extends StatelessWidget {
                       parent: AlwaysScrollableScrollPhysics()),
                   shrinkWrap: true,
                   itemCount: dataList.length,
-                  itemBuilder: (context, index) /*async*/ {
+                  itemBuilder: (context, index) {
                     DocumentSnapshot data = dataList[index];
-
-                    String userName = '';
-                    //User user = await AppFireStore.getUsersInfo(data['${Constant.KEY_USERID}'].toString());
 
                     Timestamp timestamp = data['${Constant.KEY_POST_DATE}'];
                     DateTime date = Timestamp.fromMillisecondsSinceEpoch(
@@ -47,53 +44,10 @@ class ListData extends StatelessWidget {
 
                     String userID = data['${Constant.KEY_USERID}'].toString();
 
-                    /*  AppFireStore.getUsersInfo(userID).then((value) {
-                      userName = value.userName;
-                      print('data firestore : $userName');
-                    });*/
-
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.blue,
-                              radius: 25,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(60),
-                                child: Image.asset(
-                                  'images/logo.jpg',
-                                  width: 48,
-                                  height: 48,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    userName == ''
-                                        ? data['${Constant.KEY_USERID}']
-                                            .toString()
-                                        : userName,
-                                    style: kBoldStyle,
-                                  ),
-                                  Text(
-                                    timeago.format(date, locale: 'en_short'),
-                                    style: kRegularStyle14,
-                                  ),
-                                  //Text('hello') //)
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                        getUserData(userID, date),
                         SizedBox(
                           height: 10,
                         ),
@@ -113,5 +67,109 @@ class ListData extends StatelessWidget {
             : Center(child: Text("No Data Found"));
       },
     );
+  }
+
+  getRowData(String imageUrl, String userName, DateTime date) {
+    return Row(
+      children: [
+        imageUrl == ''
+            ? CirCleImage(
+                width: 36,
+                height: 36,
+              )
+            : CirCleImage(
+                width: 36,
+                height: 36,
+                imagePath: imageUrl,
+                from: Constant.IMAGE_FROM_NETWORK,
+              ),
+        /*CircleAvatar(
+          backgroundColor: Colors.blue,
+          radius: 20,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(60),
+            child: imageUrl == ''
+                ? CirCleImage()
+                : CirCleImage(
+                    imagePath: imageUrl,
+                    from: Constant.IMAGE_FROM_NETWORK,
+                  ),
+          ),
+        ),*/
+        SizedBox(
+          width: 16,
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                userName,
+                style: kBoldStyle,
+              ),
+              Text(
+                timeago.format(date, locale: 'en_short'),
+                style: kRegularStyle14,
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  getUserData(String userID, DateTime date) {
+    return StreamBuilder(
+        stream: AppFireStore.user.where('uID', isEqualTo: userID).snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshotuser) {
+          switch (snapshotuser.connectionState) {
+            case ConnectionState.waiting:
+              return SizedBox();
+            case ConnectionState.active:
+              print(snapshotuser.data!.docs.toString());
+              break;
+            default:
+              break;
+          }
+          if (snapshotuser.hasError) {
+            print('come in error');
+          }
+          String imageurl = '';
+          String userName = '';
+          try {
+            if (snapshotuser.data!.docs.isNotEmpty) {
+              DocumentSnapshot user = snapshotuser.data!.docs[0];
+              if (user.exists) {
+                try {
+                  imageurl = user['${AppFireStore.USER_PHOTO}'];
+                } catch (error) {
+                  imageurl = '';
+                }
+                try {
+                  userName = user['${AppFireStore.USER_NAME}'];
+                } catch (error) {
+                  userName = 'App User';
+                }
+              } else {
+                imageurl = '';
+                userName = 'App User';
+              }
+            } else {
+              imageurl = '';
+              userName = 'App User';
+            }
+          } catch (error) {
+            imageurl = '';
+
+            userName = 'App User';
+          }
+          String name = '';
+          if (userName == 'App User') {
+            name = '$userName ' + '${userID.substring(userID.length - 5)}';
+          } else {
+            name = userName;
+          }
+          return getRowData(imageurl, name, date);
+        });
   }
 }

@@ -22,14 +22,16 @@ class RegisterController extends GetxController {
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
               email: loginController.text, password: passwordController.text);
+      Get.back();
       if (userCredential.user != null) {
         //message = 'Account Created Successfully..!!';
         User? user = userCredential.user;
-        Get.back();
-        Get.to(DashBoardScreen(),
+
+        Get.offAll(() => DashBoardScreen(),
             arguments: [SignInConfig.EMAIL, user!.email, user.uid]);
       }
     } on FirebaseAuthException catch (e) {
+      print(e.code);
       if (e.code == 'weak-password') {
         message = 'The password provided is too weak.';
       } else if (e.code == 'email-already-in-use') {
@@ -38,7 +40,6 @@ class RegisterController extends GetxController {
     } catch (e) {
       message = e.toString();
     }
-    Get.back();
     return message;
   }
 }

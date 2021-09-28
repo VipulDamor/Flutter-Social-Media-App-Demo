@@ -32,10 +32,6 @@ class AppTwitterSignin {
         UserCredential credential =
             await FirebaseAuth.instance.signInWithPopup(twitterProvider);
 
-        /*print(credential);
-        print(credential.user);
-        print(credential.user!.email);*/
-
         if (credential != null && credential.user != null) {
           String? email = credential.user!.email;
           String id = credential.user!.uid;
@@ -43,7 +39,7 @@ class AppTwitterSignin {
           sharedPrefarance.write(Constant.GOOGLE_SIGNIN_EMAIL, email);
           sharedPrefarance.write(Constant.GOOGLE_SIGNIN_ID, id);
 
-          Get.off(() => DashBoardScreen(),
+          Get.offAll(() => DashBoardScreen(),
               arguments: [SignInConfig.TWITTER, email, id]);
         }
       } on FirebaseAuthException catch (error) {
@@ -70,7 +66,7 @@ class AppTwitterSignin {
           sharedPrefarance.write(Constant.GOOGLE_SIGNIN_EMAIL, email);
           sharedPrefarance.write(Constant.GOOGLE_SIGNIN_ID, id);
 
-          Get.off(() => DashBoardScreen(),
+          Get.offAll(() => DashBoardScreen(),
               arguments: [SignInConfig.TWITTER, email, id]);
 
           print('====== Login success ======');
@@ -93,10 +89,8 @@ class AppTwitterSignin {
       final id = sharedPrefarance.read(Constant.GOOGLE_SIGNIN_ID);
       final email = sharedPrefarance.read(Constant.GOOGLE_SIGNIN_EMAIL);
 
-      // print('twitter data : $id and  $email');
-
       SchedulerBinding.instance!.addPostFrameCallback((_) {
-        Get.off(() => DashBoardScreen(),
+        Get.offAll(() => DashBoardScreen(),
             arguments: [SignInConfig.TWITTER, email, id]);
       });
     } catch (error) {

@@ -16,61 +16,69 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var logintype = sharedPrefarance.read(Constant.LOGIN_WITH);
-    var userID = sharedPrefarance.read(Constant.KEY_USERID);
-    var UserEmail = sharedPrefarance.read(Constant.KEY_USEREMAIL);
+    Size size = Get.size;
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(title: Text('Settings')),
-        body: (Container(
-          child: ListView(
-            children: [
-              ListTile(
-                leading: Icon(FontAwesomeIcons.affiliatetheme),
-                title: Text('Change Theme'),
-                subtitle: Text('eg. dark,light Theme'),
-                onTap: () {},
-              ),
-              Divider(
-                thickness: 1,
-              ),
-              ListTile(
-                leading: Icon(FontAwesomeIcons.signOutAlt),
-                title: Text('Logout'),
-                subtitle: Text('User Logout'),
-                onTap: () async {
-                  if (logintype.runtimeType == String) {
-                    await sharedPrefarance.erase();
-                    if (logintype == SignInConfig.GOOGLE.toString()) {
-                      AppGoogleSignIn appGoogleSignIn = AppGoogleSignIn();
-                      await appGoogleSignIn.handleGoogleSignOut();
-                      await appGoogleSignIn.isSignin();
-                    }
-                    if (logintype == SignInConfig.FACEBOOK.toString()) {
-                      AppFacebookSignin appGoogleSignIn = AppFacebookSignin();
-                      await appGoogleSignIn.performFacebookLogout();
-                      await appGoogleSignIn.isFacebookLogin();
-                    }
-                    if (logintype == SignInConfig.EMAIL.toString()) {
-                      await FirebaseAuth.instance.signOut();
-                      await Constant.isLoggedIn();
-                    }
-                    if (logintype == SignInConfig.TWITTER.toString()) {
-                      if (kIsWeb) {
-                        FirebaseAuth.instance.signOut();
+        body: Center(
+          child: (Container(
+            height: size.height *
+                (size.height > 770
+                    ? 0.7
+                    : size.height > 670
+                        ? 0.8
+                        : 0.9),
+            width: 500,
+            child: ListView(
+              children: [
+                ListTile(
+                  leading: Icon(FontAwesomeIcons.affiliatetheme),
+                  title: Text('Change Theme'),
+                  subtitle: Text('eg. dark,light Theme'),
+                  onTap: () {},
+                ),
+                Divider(
+                  thickness: 1,
+                ),
+                ListTile(
+                  leading: Icon(FontAwesomeIcons.signOutAlt),
+                  title: Text('Logout'),
+                  subtitle: Text('User Logout'),
+                  onTap: () async {
+                    if (logintype.runtimeType == String) {
+                      await sharedPrefarance.erase();
+                      if (logintype == SignInConfig.GOOGLE.toString()) {
+                        AppGoogleSignIn appGoogleSignIn = AppGoogleSignIn();
+                        await appGoogleSignIn.handleGoogleSignOut();
+                        await appGoogleSignIn.isSignin();
                       }
-                      Get.off(() => Login());
+                      if (logintype == SignInConfig.FACEBOOK.toString()) {
+                        AppFacebookSignin appGoogleSignIn = AppFacebookSignin();
+                        await appGoogleSignIn.performFacebookLogout();
+                        await appGoogleSignIn.isFacebookLogin();
+                      }
+                      if (logintype == SignInConfig.EMAIL.toString()) {
+                        await FirebaseAuth.instance.signOut();
+                        await Constant.isLoggedIn();
+                      }
+                      if (logintype == SignInConfig.TWITTER.toString()) {
+                        if (kIsWeb) {
+                          FirebaseAuth.instance.signOut();
+                        }
+                        Get.offAll(() => Login());
+                      }
                     }
-                  }
-                },
-              ),
-              Divider(
-                thickness: 1,
-              ),
-            ],
-          ),
-        )),
+                  },
+                ),
+                Divider(
+                  thickness: 1,
+                ),
+              ],
+            ),
+          )),
+        ),
       ),
     );
   }

@@ -25,10 +25,12 @@ class AppFacebookSignin {
       // print(userData);
       String email = userData['name'];
       String id = userData['id'];
-      Get.off(DashBoardScreen(), arguments: [SignInConfig.FACEBOOK, email, id]);
+
+      Get.offAll(DashBoardScreen(),
+          arguments: [SignInConfig.FACEBOOK, email, id]);
     } else {
       if (!Get.currentRoute.endsWith('Login')) {
-        Get.off(() => Login());
+        Get.offAll(() => Login());
       }
     }
   }

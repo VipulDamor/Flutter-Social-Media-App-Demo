@@ -21,6 +21,7 @@ class Login extends StatelessWidget {
   @override
   build(BuildContext context) {
     var config = sharedPrefarance.read(Constant.LOGIN_WITH);
+    Size size = Get.size;
 
 /*    print('runtimeType ${config.runtimeType}');
     print('runtimeType $config');*/
@@ -43,110 +44,119 @@ class Login extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(21, 0, 21, 0),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.asset(
-                    "images/logo.jpg",
-                    width: 160,
-                    height: 160,
-                  ),
-                  Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: 31,
-                      fontWeight: FontWeight.w700,
+        child: Center(
+          child: Container(
+            height: size.height *
+                (size.height > 770
+                    ? 0.7
+                    : size.height > 670
+                        ? 0.8
+                        : 0.9),
+            width: 500,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(21, 0, 21, 0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Image.asset(
+                      "images/logo.jpg",
+                      width: 160,
+                      height: 160,
                     ),
-                    textAlign: TextAlign.start,
-                  ),
-                  SizedBox(height: 8),
-                  EditText('email', false, Icons.alternate_email, (data) {},
-                      getLoginController.loginEmailController),
-                  Divider(
-                    color: Colors.black,
-                    thickness: 1,
-                  ),
-                  EditText('password', true, Icons.lock_outlined, (data) {},
-                      getLoginController.loginPasswordController),
-                  Divider(
-                    color: Colors.black,
-                    thickness: 1,
-                  ),
-                  SizedBox(height: 10),
-                  RoundedButton('Login', () async {
-                    //button click
-                    String message =
-                        await getLoginController.performEmailLogin();
-                    Constant.showAlertDialog(message);
-                  }),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey,
-                          thickness: 1,
-                        ),
+                    Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 31,
+                        fontWeight: FontWeight.w700,
                       ),
-                      Expanded(
-                          flex: 2,
+                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(height: 8),
+                    EditText('email', false, Icons.alternate_email, (data) {},
+                        getLoginController.loginEmailController),
+                    Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                    ),
+                    EditText('password', true, Icons.lock_outlined, (data) {},
+                        getLoginController.loginPasswordController),
+                    Divider(
+                      color: Colors.black,
+                      thickness: 1,
+                    ),
+                    SizedBox(height: 10),
+                    RoundedButton('Login', () async {
+                      //button click
+                      String message =
+                          await getLoginController.performEmailLogin();
+                      Constant.showAlertDialog(message);
+                    }),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 1,
+                          ),
+                        ),
+                        Expanded(
+                            flex: 2,
+                            child: Text(
+                              'Or sign in with',
+                              textAlign: TextAlign.center,
+                            )),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BottomIcons(FontAwesomeIcons.google, () async {
+                          AppGoogleSignIn appGoogleSignIn = AppGoogleSignIn();
+                          await appGoogleSignIn.handleGooleSignIn();
+                          await appGoogleSignIn.isSignin();
+                        }),
+                        SizedBox(width: 20),
+                        BottomIcons(FontAwesomeIcons.facebook, () {
+                          AppFacebookSignin().performFacebookLogin();
+                        }),
+                        SizedBox(width: 20),
+                        BottomIcons(FontAwesomeIcons.twitter, () async {
+                          await AppTwitterSignin().performTwitterSignin();
+                        }),
+                        /*SizedBox(width: 20),
+                        Platform.isIOS
+                            ? BottomIcons(FontAwesomeIcons.apple, () {}):
+                        SizedBox(width: 20),*/
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('New User ?'),
+                        TextButton(
+                          onPressed: () {
+                            Get.to(() => Register());
+                          },
                           child: Text(
-                            'Or sign in with',
-                            textAlign: TextAlign.center,
-                          )),
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey,
-                          thickness: 1,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BottomIcons(FontAwesomeIcons.google, () async {
-                        AppGoogleSignIn appGoogleSignIn = AppGoogleSignIn();
-                        await appGoogleSignIn.handleGooleSignIn();
-                        await appGoogleSignIn.isSignin();
-                      }),
-                      SizedBox(width: 20),
-                      BottomIcons(FontAwesomeIcons.facebook, () {
-                        AppFacebookSignin().performFacebookLogin();
-                      }),
-                      SizedBox(width: 20),
-                      BottomIcons(FontAwesomeIcons.twitter, () async {
-                        await AppTwitterSignin().performTwitterSignin();
-                      }),
-                      /*SizedBox(width: 20),
-                      Platform.isIOS
-                          ? BottomIcons(FontAwesomeIcons.apple, () {}):
-                      SizedBox(width: 20),*/
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('New User ?'),
-                      TextButton(
-                        onPressed: () {
-                          Get.to(() => Register());
-                        },
-                        child: Text(
-                          ' Register',
-                          style: TextStyle(color: Colors.indigo),
-                        ),
-                      )
-                    ],
-                  )
-                ],
+                            ' Register',
+                            style: TextStyle(color: Colors.indigo),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

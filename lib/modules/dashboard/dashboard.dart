@@ -1,4 +1,6 @@
 import 'package:fdsr/component/circle_Image.dart';
+import 'package:fdsr/models/user.dart';
+import 'package:fdsr/modules/editProfile/edit_profile.dart';
 import 'package:fdsr/modules/profile/profile.dart';
 import 'package:fdsr/modules/profile/profile_controller.dart';
 import 'package:fdsr/modules/settings/settings.dart';
@@ -36,6 +38,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     sharedPrefarance.write(Constant.KEY_USERID, userID);
     sharedPrefarance.write(Constant.KEY_USEREMAIL, email);
 
+    getUser();
+
     //todo may need in future work
     /*switch (config[0]) {
       case SignInConfig.EMAIL:
@@ -58,6 +62,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = Get.size;
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -78,83 +84,82 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 icon: Icon(Icons.settings))
           ],
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Get.to(() => Profile());
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(top: 4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.indigo,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Obx(
-                            () => profileController.userPhoto != ''
-                                ? CirCleImage(
-                                    imagePath:
-                                        '${profileController.userPhoto.value}',
-                                    from: Constant.IMAGE_FROM_NETWORK)
-                                : CirCleImage(),
+        body: Center(
+          child: Container(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Get.to(() => Profile());
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(top: 4),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.indigo,
                           ),
-                          Expanded(
-                            flex: 2,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Obx(() => Text(
-                                      '${profileController.userName}',
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Obx(
+                                () => profileController.userPhoto != ''
+                                    ? CirCleImage(
+                                        imagePath:
+                                            '${profileController.userPhoto.value}',
+                                        from: Constant.IMAGE_FROM_NETWORK)
+                                    : CirCleImage(),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Obx(() => Text(
+                                          '${profileController.userName}',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700),
+                                        )),
+                                    Text(
+                                      email,
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w700),
-                                    )),
-                                Text(
-                                  email,
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.white),
+                                          fontSize: 14, color: Colors.white),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          )
-                        ],
+                              )
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Container(
-                child: TopChipCategory(),
-              ),
-            ),
-            Expanded(
-              flex: 10,
-              child: Container(
-                padding: EdgeInsets.fromLTRB(21, 10, 21, 30),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey),
-                  //borderRadius: BorderRadius.all(Radius.circular(30)),
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(30),
-                      topLeft: Radius.circular(30)),
                 ),
-                child: ListData(),
-              ),
+                Expanded(
+                  flex: 10,
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(21, 10, 21, 30),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey),
+                      //borderRadius: BorderRadius.all(Radius.circular(30)),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30),
+                          topLeft: Radius.circular(30)),
+                    ),
+                    child: ListData(),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -233,6 +238,14 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             ),
           );
         });
+  }
+
+  void getUser() async {
+    User user = await AppFireStore.getUsersInfo(userID);
+    print('aaafreshUser : ${user.userName}');
+    if (user.userName.isEmpty) {
+      Get.to(() => EditProfile());
+    }
   }
 }
 
