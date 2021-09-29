@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fdsr/models/user.dart';
@@ -142,14 +143,33 @@ class AppFireStore {
     String fileName = '$userID.jpg';
     Constant.getloaderDialog(message: 'Uploading...');
     FirebaseStorage storage = FirebaseStorage.instance;
+
     UploadTask uploadTask =
         storage.ref().child('userprofile').child(fileName).putFile(image!);
 
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
+
     taskSnapshot.ref.getDownloadURL().then((value) async {
       String downloadURL = await taskSnapshot.ref.getDownloadURL();
       Get.back();
-      // print(downloadURL);
+      updateUserProfilePhoto(refID, value);
+    });
+  }
+
+  static uploadorUpdateWebUserImage(
+      String userID, String refID, Uint8List bytesData) async {
+    String fileName = '$userID.jpg';
+
+    Constant.getloaderDialog(message: 'Uploading...');
+    FirebaseStorage storage = FirebaseStorage.instance;
+
+    UploadTask uploadTask =
+        storage.ref().child('userprofile').child(fileName).putData(bytesData);
+
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
+    Get.back();
+    taskSnapshot.ref.getDownloadURL().then((value) async {
+      String downloadURL = await taskSnapshot.ref.getDownloadURL();
       updateUserProfilePhoto(refID, value);
     });
   }

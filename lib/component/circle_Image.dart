@@ -26,6 +26,8 @@ class CirCleImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('from : $from \n  image path : $imagePath');
+
     return Padding(
       padding: EdgeInsets.all(padding),
       child: ClipRRect(
@@ -42,6 +44,10 @@ class CirCleImage extends StatelessWidget {
                       width: width,
                       height: height,
                       imageUrl: imagePath,
+                      /*httpHeaders: {
+                        "Access-Control-Allow-Headers": "*",
+                        "Access-Control-Allow-Origin": "*"
+                      },*/
                       placeholder: (context, url) =>
                           CircularProgressIndicator(),
                       errorWidget: (context, url, error) => Icon(Icons.error),

@@ -242,7 +242,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   void getUser() async {
     User user = await AppFireStore.getUsersInfo(userID);
-    print('aaafreshUser : ${user.userName}');
+    // print('aaafreshUser : ${user.userName}');
     if (user.userName.isEmpty) {
       Get.to(() => EditProfile());
     }

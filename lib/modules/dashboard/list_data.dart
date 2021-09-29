@@ -83,19 +83,6 @@ class ListData extends StatelessWidget {
                 imagePath: imageUrl,
                 from: Constant.IMAGE_FROM_NETWORK,
               ),
-        /*CircleAvatar(
-          backgroundColor: Colors.blue,
-          radius: 20,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(60),
-            child: imageUrl == ''
-                ? CirCleImage()
-                : CirCleImage(
-                    imagePath: imageUrl,
-                    from: Constant.IMAGE_FROM_NETWORK,
-                  ),
-          ),
-        ),*/
         SizedBox(
           width: 16,
         ),
@@ -126,7 +113,7 @@ class ListData extends StatelessWidget {
             case ConnectionState.waiting:
               return SizedBox();
             case ConnectionState.active:
-              print(snapshotuser.data!.docs.toString());
+              //print(snapshotuser.data!.docs.toString());
               break;
             default:
               break;
@@ -160,7 +147,6 @@ class ListData extends StatelessWidget {
             }
           } catch (error) {
             imageurl = '';
-
             userName = 'App User';
           }
           String name = '';

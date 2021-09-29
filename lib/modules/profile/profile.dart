@@ -76,7 +76,7 @@ class Profile extends StatelessWidget {
                               height: 130,
                               width: 130,
                               borderRadious: 110,
-                              imagePath: '${profileController.imagepath.value}',
+                              imagePath: '${profileController.imagepath}',
                               from: Constant.IMAGE_FROM_STORAGE,
                             ),
                     ),
@@ -85,7 +85,7 @@ class Profile extends StatelessWidget {
                         right: 10,
                         child: InkWell(
                           onTap: () async {
-                            profileController.getImage(
+                            await profileController.getImage(
                                 userID, profileController.controllerUser.refID);
                           },
                           child: CircleAvatar(
