@@ -5,34 +5,21 @@ import 'package:fdsr/modules/profile/profile_controller.dart';
 import 'package:fdsr/utils/app_firestore.dart';
 import 'package:fdsr/utils/constant.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-/*class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
-
-  @override
-  _ProfileState createState() => _ProfileState();
-}*/
-
-/*class _ProfileState extends State<Profile> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}*/
-
 class Profile extends StatelessWidget {
   final sharedPrefarance = GetStorage();
-  String _userName = '';
   final profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
     var userID = sharedPrefarance.read(Constant.KEY_USERID);
-    var UserEmail = sharedPrefarance.read(Constant.KEY_USEREMAIL);
+    var UserEmail = sharedPrefarance.read(Constant.KEY_USER_EMAIL);
     Size size = Get.size;
+
     profileController.getUser(userID);
 
     final Stream<QuerySnapshot> dataStream = AppFireStore.posts
@@ -76,8 +63,10 @@ class Profile extends StatelessWidget {
                               height: 130,
                               width: 130,
                               borderRadious: 110,
-                              imagePath: '${profileController.imagepath}',
-                              from: Constant.IMAGE_FROM_STORAGE,
+                              imagePath: '${profileController.imagePath}',
+                              from: kIsWeb
+                                  ? Constant.IMAGE_FROM_DESKTOP
+                                  : Constant.IMAGE_FROM_STORAGE,
                             ),
                     ),
                     Positioned(

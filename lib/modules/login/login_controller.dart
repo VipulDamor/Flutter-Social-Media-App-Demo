@@ -19,7 +19,7 @@ class LoginController extends GetxController {
 
   Future<String> performEmailLogin() async {
     String message = '';
-    Constant.getloaderDialog();
+    Constant.getLoaderDialog();
     try {
       UserCredential userCredential =
           await _firebaseAuth.signInWithEmailAndPassword(

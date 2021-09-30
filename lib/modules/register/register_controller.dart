@@ -18,7 +18,7 @@ class RegisterController extends GetxController {
   Future<String> performRegister() async {
     String message = '';
     try {
-      Constant.getloaderDialog();
+      Constant.getLoaderDialog();
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
               email: loginController.text, password: passwordController.text);

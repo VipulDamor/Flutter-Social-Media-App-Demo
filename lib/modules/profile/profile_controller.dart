@@ -13,7 +13,7 @@ class ProfileController extends GetxController {
 
   var userName = ''.obs;
   final ImagePicker _picker = ImagePicker();
-  dynamic imagepath = 'images/logo.jpg'.obs;
+  dynamic imagePath = ''.obs;
   var userPhoto = ''.obs;
 
   User controllerUser = User();
@@ -29,23 +29,6 @@ class ProfileController extends GetxController {
       userPhoto = user.userPhoto.obs;
     });
   }
-
-  void uploadImage({required Function(dh.File file) onSelected}) {
-    dh.FileUploadInputElement uploadInput = dh.FileUploadInputElement()
-      ..accept = 'image/*';
-    uploadInput.click();
-
-    uploadInput.onChange.listen((event) {
-      final file = uploadInput.files!.first;
-      final reader = dh.FileReader();
-      reader.readAsDataUrl(file);
-      reader.onLoadEnd.listen((event) {
-        onSelected(file);
-      });
-    });
-  }
-
-  getImages(String userID, String refID) async {}
 
   getImage(String userID, String refID) async {
     if (kIsWeb) {
@@ -63,16 +46,18 @@ class ProfileController extends GetxController {
         reader.onLoadEnd.listen((e) async {
           var _bytesData = await Base64Decoder()
               .convert(reader.result.toString().split(",").last);
+          await AppFireStore.uploadorUpdateWebUserImage(
+              userID, refID, _bytesData);
+
+          getUser(userID);
 
           userPhoto.update((val) {
             userPhoto = ''.obs;
           });
 
-          imagepath.update((val) async {
-            imagepath = _bytesData.obs;
+          imagePath.update((val) async {
+            imagePath = await _bytesData.obs;
           });
-
-          AppFireStore.uploadorUpdateWebUserImage(userID, refID, _bytesData);
         });
         reader.readAsDataUrl(file);
       });
@@ -82,13 +67,13 @@ class ProfileController extends GetxController {
       userPhoto.update((val) {
         userPhoto = ''.obs;
       });
-      imagepath.update((val) async {
-        imagepath = image!.path.obs;
-        print('photo ${imagepath.value}');
+      imagePath.update((val) async {
+        imagePath = image!.path.obs;
+        print('photo ${imagePath.value}');
       });
 
       AppFireStore.uploadorUpdateUserImage(
-          File(imagepath.value), userID, refID);
+          File(imagePath.value), userID, refID);
     }
   }
 }

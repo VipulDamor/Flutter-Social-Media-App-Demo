@@ -21,19 +21,20 @@ class Constant {
   static const String GOOGLE_SIGNIN_ID = 'googleAuthID';
   static const String IMAGE_FROM_STORAGE = 'storage';
   static const String IMAGE_FROM_NETWORK = 'network';
+  static const String IMAGE_FROM_DESKTOP = 'desktop';
 
   //fireStoreKeys
   static const String KEY_POSTS = 'posts';
   static const String KEY_POST = 'post';
   static const String KEY_POST_DATE = 'postDate';
   static const String KEY_USERID = 'userID';
-  static const String KEY_USEREMAIL = 'userEmail';
+  static const String KEY_USER_EMAIL = 'userEmail';
 
-  static Future<User?> getFirebaseuser() async {
+  static Future<User?> getFirebaseUser() async {
     return _firebaseAuth.currentUser;
   }
 
-  static void getloaderDialog({String message = 'Loading..'}) {
+  static void getLoaderDialog({String message = 'Loading..'}) {
     Get.dialog(AlertDialog(
       content: new Row(
         children: [
@@ -131,18 +132,18 @@ class Constant {
     }
   }
 
-  static void showMessageAlertDialog(String message, {VoidCallback? onpress}) {
+  static void showMessageAlertDialog(String message, {VoidCallback? onPress}) {
     if (message != '') {
       Get.dialog(
         AlertDialog(
           content: Text(message),
           actions: [
             TextButton(
-                onPressed: onpress == null
+                onPressed: onPress == null
                     ? () {
                         Get.back();
                       }
-                    : onpress,
+                    : onPress,
                 child: Text('ok'))
           ],
         ),

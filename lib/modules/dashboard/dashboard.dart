@@ -36,7 +36,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
     sharedPrefarance.write(Constant.LOGIN_WITH, config[0].toString());
     sharedPrefarance.write(Constant.KEY_USERID, userID);
-    sharedPrefarance.write(Constant.KEY_USEREMAIL, email);
+    sharedPrefarance.write(Constant.KEY_USER_EMAIL, email);
 
     getUser();
 

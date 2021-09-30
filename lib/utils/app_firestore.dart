@@ -3,11 +3,14 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fdsr/models/user.dart';
+import 'package:fdsr/modules/profile/profile_controller.dart';
 import 'package:fdsr/utils/constant.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 
 class AppFireStore {
+  static final profileController = Get.put(ProfileController());
+
   static CollectionReference posts =
       FirebaseFirestore.instance.collection('posts');
   static CollectionReference user =
@@ -33,7 +36,7 @@ class AppFireStore {
 
   static Future<void> addPostToFirebase(
       String post, String userID, String userName) async {
-    Constant.getloaderDialog();
+    Constant.getLoaderDialog();
     await posts.add({
       '$POST_COMMENT': "",
       '$POST_LIKES': "",
@@ -58,7 +61,7 @@ class AppFireStore {
       String uMobile = '',
       String uPhoto = '',
       String uAddress = ''}) async {
-    Constant.getloaderDialog();
+    Constant.getLoaderDialog();
 
     //await _user.where('$USER_ID', isEqualTo: uID).get().update({
     if (refID.isNotEmpty) {
@@ -95,12 +98,15 @@ class AppFireStore {
     }
   }
 
-  static updateUserProfilePhoto(String refID, String uPhoto) async {
-    Constant.getloaderDialog(message: 'Updating...');
+  static updateUserProfilePhoto(
+      String refID, String uPhoto, String userID) async {
+    Constant.getLoaderDialog(message: 'Updating...');
     await user.doc(refID).update({
       '$USER_PHOTO': uPhoto,
     }).then((value) {
       Get.back();
+      Constant.showMessageAlertDialog('Image Uploaded Successfully..!!!');
+      profileController.getUser(userID);
     }).catchError((error) {
       print("Failed to add user: $error");
       Get.back();
@@ -141,7 +147,7 @@ class AppFireStore {
   static uploadorUpdateUserImage(
       File? image, String userID, String refID) async {
     String fileName = '$userID.jpg';
-    Constant.getloaderDialog(message: 'Uploading...');
+    Constant.getLoaderDialog(message: 'Uploading...');
     FirebaseStorage storage = FirebaseStorage.instance;
 
     UploadTask uploadTask =
@@ -152,7 +158,7 @@ class AppFireStore {
     taskSnapshot.ref.getDownloadURL().then((value) async {
       String downloadURL = await taskSnapshot.ref.getDownloadURL();
       Get.back();
-      updateUserProfilePhoto(refID, value);
+      updateUserProfilePhoto(refID, value, userID);
     });
   }
 
@@ -160,7 +166,7 @@ class AppFireStore {
       String userID, String refID, Uint8List bytesData) async {
     String fileName = '$userID.jpg';
 
-    Constant.getloaderDialog(message: 'Uploading...');
+    Constant.getLoaderDialog(message: 'Uploading...');
     FirebaseStorage storage = FirebaseStorage.instance;
 
     UploadTask uploadTask =
@@ -170,7 +176,7 @@ class AppFireStore {
     Get.back();
     taskSnapshot.ref.getDownloadURL().then((value) async {
       String downloadURL = await taskSnapshot.ref.getDownloadURL();
-      updateUserProfilePhoto(refID, value);
+      updateUserProfilePhoto(refID, value, userID);
     });
   }
 }

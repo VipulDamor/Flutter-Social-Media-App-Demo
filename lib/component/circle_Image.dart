@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fdsr/utils/constant.dart';
@@ -11,7 +12,7 @@ class CirCleImage extends StatelessWidget {
   double borderRadious;
   double width;
   double height;
-  String imagePath;
+  dynamic imagePath;
   IconData iconData;
   String from;
 
@@ -31,52 +32,43 @@ class CirCleImage extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(padding),
       child: ClipRRect(
-          borderRadius: BorderRadius.circular(borderRadious),
-          child: from == Constant.IMAGE_FROM_NETWORK
-              ? imagePath == '' || imagePath == 'images/logo.jpg'
-                  ? Image.asset(
-                      'images/logo.jpg',
-                      width: width,
-                      height: height,
-                      fit: BoxFit.cover,
-                    )
-                  : CachedNetworkImage(
-                      width: width,
-                      height: height,
-                      imageUrl: imagePath,
-                      /*httpHeaders: {
-                        "Access-Control-Allow-Headers": "*",
-                        "Access-Control-Allow-Origin": "*"
-                      },*/
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                      fit: BoxFit.cover,
-                    ) /*Image(
-                      width: width,
-                      height: height,
-                      image: CachedNetworkImageProvider(imagePath,),
-                      fit: BoxFit.cover)*/
-              : (from == Constant.IMAGE_FROM_STORAGE
-                  ? imagePath == 'images/logo.jpg'
-                      ? Image.asset(
-                          imagePath,
-                          width: width,
-                          height: height,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.file(
-                          File(imagePath),
-                          width: width,
-                          height: height,
-                          fit: BoxFit.cover,
-                        )
-                  : Image.asset(
-                      imagePath,
-                      width: width,
-                      height: height,
-                      fit: BoxFit.cover,
-                    ))),
+        borderRadius: BorderRadius.circular(borderRadious),
+        child: getImage(),
+      ),
+    );
+  }
+
+  Widget getImage() {
+    if (from == Constant.IMAGE_FROM_NETWORK) {
+      return CachedNetworkImage(
+        width: width,
+        height: height,
+        imageUrl: imagePath,
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+        fit: BoxFit.cover,
+      );
+    } else if (from == Constant.IMAGE_FROM_STORAGE) {
+      return Image.file(
+        File(imagePath),
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+      );
+    } else if (from == Constant.IMAGE_FROM_DESKTOP) {
+      print('Desktop :  $imagePath');
+      return Image.memory(
+        Uint8List.fromList(imagePath),
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+      );
+    }
+    return Image.asset(
+      'images/logo.jpg',
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
     );
   }
 }
