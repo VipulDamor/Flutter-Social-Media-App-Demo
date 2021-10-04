@@ -8,7 +8,7 @@ import '../login/login.dart';
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // print('height:  ${Get.height.toInt()} width : ${Get.width.toInt()}');
+
     callSecondScreen();
     return SafeArea(
       child: Scaffold(

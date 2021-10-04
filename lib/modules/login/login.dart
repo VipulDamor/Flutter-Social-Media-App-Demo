@@ -23,9 +23,6 @@ class Login extends StatelessWidget {
     var config = sharedPrefarance.read(Constant.LOGIN_WITH);
     Size size = Get.size;
 
-/*    print('runtimeType ${config.runtimeType}');
-    print('runtimeType $config');*/
-
     if (config.runtimeType == String) {
       if (config == SignInConfig.GOOGLE.toString()) {
         AppGoogleSignIn().isSignin();

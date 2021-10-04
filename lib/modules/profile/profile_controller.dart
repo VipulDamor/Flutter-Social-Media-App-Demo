@@ -1,9 +1,8 @@
-import 'dart:convert';
-import 'dart:html' as dh;
 import 'dart:io';
 
 import 'package:fdsr/models/user.dart';
 import 'package:fdsr/utils/app_firestore.dart';
+import 'package:fdsr/web/web_file_upload.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,36 +31,7 @@ class ProfileController extends GetxController {
 
   getImage(String userID, String refID) async {
     if (kIsWeb) {
-      dh.FileUploadInputElement uploadInput = dh.FileUploadInputElement();
-      uploadInput.multiple = false;
-      uploadInput.draggable = true;
-      uploadInput.accept = 'image/*';
-      uploadInput.click();
-      dh.document.body!.append(uploadInput);
-
-      uploadInput.onChange.listen((e) {
-        final file = uploadInput.files!.first;
-        final reader = new dh.FileReader();
-
-        reader.onLoadEnd.listen((e) async {
-          var _bytesData = await Base64Decoder()
-              .convert(reader.result.toString().split(",").last);
-          await AppFireStore.uploadorUpdateWebUserImage(
-              userID, refID, _bytesData);
-
-          getUser(userID);
-
-          userPhoto.update((val) {
-            userPhoto = ''.obs;
-          });
-
-          imagePath.update((val) async {
-            imagePath = await _bytesData.obs;
-          });
-        });
-        reader.readAsDataUrl(file);
-      });
-      uploadInput.remove();
+      WebFileUpload.uploadWebFile(userID, refID);
     } else {
       final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       userPhoto.update((val) {
