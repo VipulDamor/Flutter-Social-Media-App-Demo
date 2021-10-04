@@ -14,7 +14,7 @@ This project is a starting point for a Flutter application.
 
 Solarized dark             |  Solarized Ocean
 :-------------------------:|:-------------------------:
-![](<img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/Screenshot_2021-10-04 fdsr(1).png" width="350"  title="hover text">)  |  ![](<img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/Screenshot_2021-10-04 fdsr(2).png" width="350"  title="hover text">)
+![](https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/Screenshot_2021-10-04 fdsr(1).png)  |  ![](<img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/Screenshot_2021-10-04 fdsr(2).png )
 
 
 
