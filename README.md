@@ -17,8 +17,7 @@ This project is a starting point for a Flutter application.
 <img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/flutter_08.png" height="300em" /><img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/flutter_09.png" height="300em" />
 
 <img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/Screenshot_2021-10-04%20fdsr(1).png" height="300em" /><img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/Screenshot_2021-10-04%20fdsr(2).png" height="300em" />
-<img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/Screenshot_2021-10-04%20fdsr(3).png" height="300em" />
-<img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/Screenshot_2021-10-04%20fdsr(4).png" height="300em" />
+<img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/Screenshot_2021-10-04%20fdsr(3).png" height="300em" /><img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/Screenshot_2021-10-04%20fdsr(4).png" height="300em" />
 <img src="https://github.com/VipulDamor/fdsr/blob/master/images/GitImages/Screenshot_2021-10-04%20fdsr.png" height="300em" />
 
 
