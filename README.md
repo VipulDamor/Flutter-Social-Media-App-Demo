@@ -1,7 +1,6 @@
-# fdsr
+# Flutter-Social-Media-App-Demo
 
-A new Flutter project.
-
+This Flutter project with Firebase integration allows users to post and like stories. Users can create accounts, log in, and share their stories containing text and images. The app utilizes Firebase Authentication for secure user login and Firebase Realtime Database or Cloud Firestore to store and retrieve story data. Users can browse and like stories, with real-time updates reflecting the popularity of the posts. The project aims to provide a seamless user experience for story sharing and engagement within a social media community.
 
 
 
